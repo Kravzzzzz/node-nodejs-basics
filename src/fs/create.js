@@ -1,16 +1,19 @@
-import fs from 'fs'
+import {exists, createWriteStream} from 'fs'
+import {dirname} from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = dirname(__filename)
 
 const create = async () => {
-    try {
-        if (fs.existsSync('node-nodejs-basics/src/fs/files/fresh.txt')) {
-            throw 'FS operation failed'
+    const path = __dirname + '/files/fresh.txt'
+    exists(path, (err) => {
+        if(err){
+            console.error(new Error('FS operation failed'))
         } else {
-            fs.createWriteStream('node-nodejs-basics/src/fs/files/fresh.txt').write('I am fresh and young')
+            createWriteStream(path).write('I am fresh and young')
         }
-    } catch (error) {
-        console.error(error)
-    }
-
+    }) 
 };
 
 await create();
